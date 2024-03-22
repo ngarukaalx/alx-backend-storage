@@ -3,9 +3,9 @@ DELIMITER $$
 CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(30), IN score INT)
 BEGIN
 	DECLARE available_project INT;
-	DECLARE projectId INT;
 	SELECT COUNT(*) INTO available_project  FROM projects WHERE name = project_name;
 	IF available_project > 0 THEN
+		DECLARE projectId;
 		SELECT id INTO projectId FROM projects WHERE name = project_name;
 		UPDATE corrections SET score = score WHERE user_id = user_id AND project_id = projectId;
 	ELSE
