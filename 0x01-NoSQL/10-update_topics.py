@@ -16,4 +16,4 @@ def update_topics(mongo_collection, name, topics):
     update_operation = {"$set": {"topics": topics}}
 
     # update the document that matches the filter
-    mongo_collection.update_one(criteria_tofilter, update_operation)
+    mongo_collection.update_many(criteria_tofilter, update_operation)
