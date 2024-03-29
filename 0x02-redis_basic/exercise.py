@@ -4,7 +4,7 @@
 
 
 import redis
-from typing import Union
+from typing import Union, Callable, Any
 import uuid
 
 
@@ -25,3 +25,22 @@ class Cache():
         key = str(uuid.uuid4())
         self._redis.mset({key: data})
         return key
+
+    def get_int(self, key: str) -> int:
+        """convert data in bytes to int"""
+        return self.get(key, fn=int)
+
+    def get_str(self, key: str) -> str:
+        """converts x to str"""
+        return self.get(key, fn=lambda x: x.decode('utf-8'))
+
+    def get(self, key: str, fn: Callable = None) -> Any:
+        """get method"""
+        result = self._redis.get(key)
+
+        if result is None:
+            return None
+
+        if fn is not None:
+            result = fn(result)
+        return result
